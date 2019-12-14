@@ -1,38 +1,39 @@
-# Site settings
-title: "Sangam's Blog"
-description: "A minimal blog template, build with Jekyll."
-url: "http://www.sangamkhanal.com.np"
-author:
-  name: "Sangam Khanal"
-  # email: "hello@sangamkhanal.com"
-  url: "http://www.sangamkhanal.com.np"
+title: Sangam's Blog
+author: Sangam
+email: sangamkhnl@gmail.com
+description: > # this means to ignore newlines until "show_exerpts:"
+  Hello, It's Sangam!
+show_excerpts: true # set to true to show excerpts on the homepage
+
+# Minima date format
+# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
+sass:
+  sass_dir: _sass
+
+permalink: /posts/:title/
+texture:
+  title: Sangam Khanal
+  tagline: Developer
+  date_format: "%b %-d, %Y"
+  style: black
+  showNav: false
+  showPicker: true
+
+  # generate social links in footer
+  social_links:
+    github:  chinge55
+    linkedIn: in/sangam-khanal-ba06b8b9
+    rss: rss
+ 
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+#header_pages:
+# - about.md
 
 # Build settings
-baseurl: / # Change this to your relative path (ex: /blog/), or leave just a /
-markdown: kramdown
-source: .
-destination: ./_site
-permalink: /:title
-paginate: 8
-paginate_path: /page:num/
+# theme: texture
 
-# Default values
-defaults:
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-
-# Plugins
-gems:
-  - jekyll-paginate
-
-# Custom variables
-version: "1.1.0"
-
-# Options
-custom_header: false
-custom_nav_footer: false
-reverse: false
+plugins:
+  - jekyll-seo-tag
+#  - jekyll-feed
