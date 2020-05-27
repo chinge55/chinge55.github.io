@@ -13,7 +13,7 @@ sass:
 permalink: /posts/:title/
 texture:
   title: Sangam Khanal
-  tagline: I try to write things, and hoping to get better! 
+  tagline: I try to write things, and hope to get better! 
   date_format: "%b %-d, %Y"
   style: black
   showNav: false
