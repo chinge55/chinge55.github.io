@@ -1,35 +1,29 @@
-{%- if site.texture.analytics_id -%}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.texture.analytics_id }}"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag() { dataLayer.push(arguments); }
-	gtag('js', new Date());
+<footer class="site-footer">
 
-	gtag('config', '{{ site.texture.analytics_id }}');
-</script>
-{%- endif -%}
+    <div class="footer-wrapper">
 
-{%- if site.texture.showPicker -%}
-<div id="texture-picker">
-	<div style="display:flex;justify-content: space-between">
-		<p>Select Texture</p>
-		<p><a id="hidePicker" href="#">Hide</a></p>
-	</div>
-	<div class="texture-colors">
-		<div id="black"></div>
-		<div id="blue"></div>	
-		<div id="red"></div>	
-		<div id="purple"></div>		
-		<div id="green"></div>
-	</div>
-	<p class="info">You can use the <b>showPicker</b> property in _config.yml to hide this picker permanently.</p>
-	<p class="info">You can use the <b>texture</b> property in _config.yml to apply a texture permanently.</p>
-</div>
-<script src="{{ "/assets/js/picker.js" | relative_url }}"></script>
-{%- endif -%}
+        <h2 class="footer-heading">{{ site.title | escape }}</h2>
 
-{%- if site.texture.useMathJax -%}
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-{%- endif -%}
+        <ul class="social-footer">
+            {% if site.twitter %}
+            <li><a href="{{ site.twitter }}" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %} {% if site.facebook %}
+            <li><a href="{{ site.facebook }}" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %} {% if site.google-plus %}
+            <li><a href="{{ site.google-plus }}" target="_blank"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %} {% if site.instagram %}
+            <li><a href="{{ site.instagram }}" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %} {% if site.pinterest %}
+            <li><a href="{{ site.pinterest }}" target="_blank"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %} {% if site.youtube %}
+            <li><a href="{{ site.youtube }}" target="_blank"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
+            {% else %} {% endif %}
+        </ul>
+
+        <div class="copyright">
+            <!-- <p><a href="https://jekyllrb.com/">Proudly powered by Jekyll</a> | Theme: Lokmont by <a href="https://artemsheludko.github.io/">Artem Sheludko</a></p> -->
+        </div>
+    </div>
+
+</footer>
+<!-- /.site-footer -->

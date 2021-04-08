@@ -1,8 +1,9 @@
 ---
 layout: post
-title:  "The Dillema"
-description: 
-date:   2017-08-03 01:03:36 +0530
+title: The Dillema 
+date:   2017-08-03 10:11:50 +0300
+img: 20.jpg
+tags: [Poem, Life]
 ---
 Walking on the deserted street,<br>
 I'm tired and the sun is about to fade<br>
@@ -11,14 +12,14 @@ In the distance,<br>
 I see a small house, a hovel<br>
 I reach to its tiny door just about to open<br>
 Will they have enough?<br>
-  For another empty stomach<br>
-Again,<br> 
+For another empty stomach<br>
+Again,<br>
 I walk on the same street<br>
 In the distance,<br>
 I see a big house, a manor<br>
 I reach to its huge gateway, just about to open<br>
 Will I be good enough?<br>
-  For those fat cats, eating with the knives<br>
+For those fat cats, eating with the knives<br>
 Again, I walk on the same street<br>
 After long hours, can't continue so I turn back<br>
 Sun is about to rise<br>

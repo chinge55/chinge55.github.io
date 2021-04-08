@@ -1,39 +1,60 @@
-title: Sangam's Blog
-author: Sangam
-email: sangamkhnl@gmail.com
-description: > # this means to ignore newlines until "show_exerpts:"
-  Hello, It's Sangam!
-show_excerpts: true # set to true to show excerpts on the homepage
-# Minima date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
-sass:
-  sass_dir: _sass
+# Site settings
+title: Sangam
+description: Lokmont is a responsive simple theme for Jekyll.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://sangamkhanal.com.np/" # the base hostname & protocol for your site, e.g. http://example.com
 
+# Banner Section
+hero: 112.jpg
+hero-title: Welcome to My Blog
+hero-description: Heavily under Construction 
 
-permalink: /posts/:title/
-texture:
-  title: Sangam Khanal
-  tagline: I try to write things, and hope to get better! 
-  date_format: "%b %-d, %Y"
-  style: black
-  showNav: false
-  showPicker: false
+# Author - Creator
+author-name: Sangam Khanal
+author-image: sangam.jpg
+about-author: My name is Sangam Khanal. I am a computer engineer and I love to do stuff.
+author-email: mail@sangamkhanal.com.np 
+author-facebook: https://twitter.com/
+author-instagram: https://www.instagram.com/
 
-  # generate social links in footer
-  social_links:
-    # github:  chinge55
-    # linkedIn: in/sangam-khanal-ba06b8b9
-    rss: rss
- 
+# Social Media Links (Links are located in hero and footer)
+facebook: https://facebook.com/me.chinge
+instagram: https://www.instagram.com/_chinge_
 
-# If you want to link only specific pages in your header, uncomment
-# this and add the path to the pages in order as they should show up
-#header_pages:
-# - about.md
+# Contact Form Settings
+contact-subtitle: This is under construction and probably won't work.. # Title for the subscription form.
+
+# Google Analytics
+google-analytics: # Add your identifier. For example UA-99631805-1.
+
+# Newsletter
+mailchimp: # Add your MailChimp form identifier. For example - blogenjoyfreedom.us16.list-manage.com/subscribe/post?u=cd56155d76ddeeb4c0bc4d080&amp;id=7a526cd13e
+
+# Comment Section (Disqus)
+disqus-identifier: chinge # Add your shortname for Disqus Comment. For example mr-brown
 
 # Build settings
-# theme: texture
+markdown: kramdown
+permalink: pretty
+paginate: 9
+paginate_path: "/page/:num"
+
+# Pages path
+defaults:
+  - scope:
+      path: '_pages'
+    values:
+      permalink: /:basename:output_ext
 
 plugins:
-  - jekyll-seo-tag
-#  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-feed
+
+include:
+  - _pages
+
+# Exclude from processing.
+exclude:
+ - Gemfile
+ - Gemfile.lock
+ - vendor
