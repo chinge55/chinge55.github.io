@@ -1,13 +1,13 @@
 # Site settings
 title: Sangam
-description: Lokmont is a responsive simple theme for Jekyll.
+description: Hello 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://sangamkhanal.com.np/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Banner Section
 hero: 112.jpg
 hero-title: Welcome to My Blog
-hero-description: Heavily under Construction 
+hero-description: Under Construction 
 
 # Author - Creator
 author-name: Sangam Khanal
@@ -22,7 +22,7 @@ facebook: https://facebook.com/me.chinge
 instagram: https://www.instagram.com/_chinge_
 
 # Contact Form Settings
-contact-subtitle: This is under construction and probably won't work.. # Title for the subscription form.
+contact-subtitle: Please leave your message here # Title for the subscription form.
 
 # Google Analytics
 google-analytics: # Add your identifier. For example UA-99631805-1.
