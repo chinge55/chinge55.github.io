@@ -15,4 +15,3 @@ The hailstorms are also annoying in Pokhara. Well, they’re annoying everywhere
 
 It has been many times that I have been completely hammered by the rain and I come to a place gleaming with sunlight. Everything there is dry, warm and quiet but everytime that happens, I get an irritating look from a nearby person. The subtle smile, questioning eyes and a chin rise of about thirty degrees which is smoothly brought down in an instant; that’s the look. I could be misinterpreting someone’s simple smile but it seems to be speaking, “How stupid can one be to not carry an umbrella?”
 
-<img src = "../../../../images/content/attention/normal.png">
