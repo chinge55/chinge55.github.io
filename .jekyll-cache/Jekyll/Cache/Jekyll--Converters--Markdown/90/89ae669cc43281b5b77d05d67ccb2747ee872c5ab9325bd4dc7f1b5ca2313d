@@ -1,4 +1,4 @@
-I"�<p>In my study of Deep Learning, there have been a lot of times that I’ve created something cool but had no way to show it to anyone. I found it the hard way that not many people believe in a complex system like Speech Recognition looking at the loss graph and the output of some test data.</p>
+I"�<p>In my study of Deep Learning, there have been a lot of times that I’ve created something cool but had no way to show it to anyone. I found it the hard way that not many people believe in a complex system like Speech Recognition looking at the loss graph and the output of some test data.</p>
 
 <p>The problems I faced:
 I built a great AI model, finetuning it for weeks. I tried to show it to other people but I had to.</p>
@@ -6,11 +6,13 @@ I built a great AI model, finetuning it for weeks. I tried to show it to other p
   <li>Load google colab</li>
   <li>Connect it to google drive</li>
   <li>Copy and load the model</li>
-  <li>Wait…<br />
-That is enough to kill a man’s enthusiasm .</li>
+  <li>Wait…</li>
 </ul>
 
-<p>I copy the colab code into a server, build a flask API around it and try to run it. It now shows the kind of tensorflow errors that I’d never seen before. Running tensorflow graphs and trying to build an API around it in the same program doesn’t work that easily.</p>
+<p>That is enough to kill a man’s enthusiasm .</p>
+
+<p>I copied the colab code into a server, built a flask API around it and tried to run it. It then showed the kind of tensorflow errors that I’d never seen before. Running tensorflow graphs and trying to build an API around it in the same program didn’t work that easily.
+One workaround was to run the AI system and show the output in the terminal. That output would then be taken by another program for further processing. That worked for me but didn’t seem like an elegant soulution.</p>
 
 <p>Upon further research I found about tensorflow serving.  It serves a tensorflow model as a REST server. 
 And It works pretty well.<br />
@@ -53,7 +55,7 @@ Well no, You’ve only served a model that outputs logits or probability distrib
 
 <p><em>If it’s a cats/dogs classification, don’t directly send the picture of a cat. Instead, read the <a href="https://www.tensorflow.org/tfx/tutorials/serving/rest_simple">documentation.</a></em></p>
 
-<p>Just like that you have a <a href="http://165.22.177.37:7000/chatbotfront">chatbot</a></p>
+<p>And just like that you have a <a href="http://165.22.177.37:7000/chatbotfront">chatbot</a></p>
 
 <p>References:</p>
 <ol>
