@@ -1,0 +1,37 @@
+I")
+<p>In my study of Deep Learning, there have been a lot of times that I’ve created something cool but had no way to show it to anyone. I found it the hard way that not many people believe in a complex system like Speech Recognition looking at the loss graph and output of some test data.</p>
+
+<p>The problems I faced:
+I built a great AI model, finetuning it for weeks. I tried to show it to other people but I had to.</p>
+<ul>
+  <li>Load google colab</li>
+  <li>Connect it to google drive</li>
+  <li>Copy and load the model</li>
+  <li>Wait…
+That is enough to kill a man’s enthusiasm .</li>
+</ul>
+
+<p>I copy the colab code into a server, build a flask API around it and try to run it. It now shows the kind of tensorflow errors that I’d never seen before. Running tensorflow graphs and trying to build an API around it in the same program doesn’t work that easily.</p>
+
+<p>Upon further research I found about tensorflow serving.  It serves the Deep Learning model as a REST server. 
+And It works pretty well.</p>
+
+<p>For simple cases, tf.keras.save_model() works fine but not if you have weirder things going inside your model.</p>
+
+<p>Prerequisites: Tensorflow, Docker
+You need not know much about docker but a good bit about tensorflow.</p>
+
+<p>Step 1:
+The first step is to save the model.</p>
+<ul>
+  <li>Initially save the model using tf.keras.save_model() and if it doesn’t work.</li>
+  <li>Study about getting graphs from your tensorflow model. It varies according to use-cases but the documentation is pretty good. https://www.tensorflow.org/guide/function<br />
+A Code example:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nb">callable</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">function</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">call</span><span class="p">)</span>
+  <span class="n">concrete_function</span> <span class="o">=</span> <span class="nb">callable</span><span class="p">.</span><span class="n">get_concrete_function</span><span class="p">(......)</span>
+  <span class="n">model</span><span class="p">.</span><span class="n">save</span><span class="p">(</span><span class="err">“</span><span class="n">filename</span><span class="err">”</span><span class="p">,</span> <span class="n">signatures</span><span class="o">=</span><span class="n">concrete_function</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>(That is how I once served a BERT model)</p>
+  </li>
+</ul>
+:ET

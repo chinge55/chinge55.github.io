@@ -1,0 +1,69 @@
+---
+layout: post
+title:  Creating An AI REST Server 
+date:   2021-08-02 15:11:50 +0545
+img: programming.jpg
+tags: [Programming, Neural Network, Deployment]
+---
+
+In my study of Deep Learning, there have been a lot of times that I’ve created something cool but had no way to show it to anyone. I found it the hard way that not many people believe in a complex system like Speech Recognition looking at the loss graph and the output of some test data. 
+
+The problems I faced:
+I built a great AI model, finetuning it for weeks. I tried to show it to other people but I had to. 
+- Load google colab
+- Connect it to google drive
+- Copy and load the model
+- Wait…
+
+That is enough to kill a man’s enthusiasm .
+
+I copy the colab code into a server, build a flask API around it and try to run it. It now shows the kind of tensorflow errors that I’d never seen before. Running tensorflow graphs and trying to build an API around it in the same program doesn’t work that easily. 
+
+Upon further research I found about tensorflow serving.  It serves a tensorflow model as a REST server. 
+And It works pretty well.<br>
+For simple cases, tf.keras.save_model() works fine but not if you have a little complex things going inside your model. 
+
+**Prerequisites**: Tensorflow, Docker<br>
+You need not know much about docker but a good bit about tensorflow. 
+
+### Step 1:
+The first step is to save the model. 
+- Initially save the model using tf.keras.save_model() and if it doesn’t work. 
+- Study about tracing graphs from your tensorflow model. It varies according to use-cases but the <a href = "https://www.tensorflow.org/guide/function">documentation</a> is pretty good.<br>
+A Code example:
+```python
+	callable = tf.function(model.call)
+	concrete_function = callable.get_concrete_function(......)
+	model.save(“filename”, signatures=concrete_function)
+```
+(That is how I once saved a BERT model)
+
+
+Now that the model is saved, next is to serve it. 
+### Step 2:
+- Tensorflow serving
+```bash
+$ docker pull tensorflow/serving
+```
+- Run it:
+```bash
+$ docker run -p 8501:8501 \
+  --mount type=bind,source=/path/to/my_model/,target=/models/my_model \
+  -e MODEL_NAME=my_model -t tensorflow/serving
+  ```
+
+**Is it done?**<br>
+Well no, You’ve only served a model that outputs logits or probability distribution of something. That, you'll have to interpret according to your requirement. So, you’d need to build a flask app(or any other app) around it. (You could use something other than flask but you might need to use tensorflow again for post-processing of those logits). Now, the app just needs to send a HTTP request to port 8501. 
+
+*If it’s a cats/dogs classification, don’t directly send the picture of a cat. Instead, read the <a href = "https://www.tensorflow.org/tfx/tutorials/serving/rest_simple">documentation.</a>*
+
+Just like that you have a <a href = "http://165.22.177.37:7000/chatbotfront">chatbot</a>
+
+
+References:
+1. <a href = "https://www.tensorflow.org/tfx/guide/serving">https://www.tensorflow.org/tfx/tutorials/serving/rest_simple</a>
+2. <a href = "https://www.tensorflow.org/tfx/serving/docker">https://www.tensorflow.org/tfx/serving/docker</a>
+3. <a href = "https://www.tensorflow.org/tfx/tutorials/serving/rest_simple">https://www.tensorflow.org/tfx/tutorials/serving/rest_simple</a>
+4. <a href = "https://www.tensorflow.org/guide/function">https://www.tensorflow.org/tfx/tutorials/serving/rest_simple</a>
+
+*I’m currently working on Emotion Recognition with Landmark Detection and hopefully I’ll have enough motivation to deploy it and release the code accompanying this post.*
