@@ -13,8 +13,7 @@ I built a great AI model, finetuning it for weeks. I tried to show it to other p
 - Load google colab
 - Connect it to google drive
 - Copy and load the model
-- Wait…
-
+- Wait…<br>
 That is enough to kill a man’s enthusiasm .
 
 I copy the colab code into a server, build a flask API around it and try to run it. It now shows the kind of tensorflow errors that I’d never seen before. Running tensorflow graphs and trying to build an API around it in the same program doesn’t work that easily. 
@@ -36,7 +35,7 @@ A Code example:
 	concrete_function = callable.get_concrete_function(......)
 	model.save(“filename”, signatures=concrete_function)
 ```
-(That is how I once saved a BERT model)
+(This is how I once saved a BERT model)
 
 
 Now that the model is saved, next is to serve it. 
@@ -53,11 +52,11 @@ $ docker run -p 8501:8501 \
   ```
 
 **Is it done?**<br>
-Well no, You’ve only served a model that outputs logits or probability distribution of something. That, you'll have to interpret according to your requirement. So, you’d need to build a flask app(or any other app) around it. (You could use something other than flask but you might need to use tensorflow again for post-processing of those logits). Now, the app just needs to send a HTTP request to port 8501. 
+Well no, You’ve only served a model that outputs logits or probability distribution of something. That, you'll have to interpret according to your requirement. So, you’d need to build an app around it. (You could use something other than python but you might need to use tensorflow again for post-processing of those logits). Now, the app just needs to send a HTTP request to port 8501. 
 
 *If it’s a cats/dogs classification, don’t directly send the picture of a cat. Instead, read the <a href = "https://www.tensorflow.org/tfx/tutorials/serving/rest_simple">documentation.</a>*
 
-Just like that you have a <a href = "http://165.22.177.37:7000/chatbotfront">chatbot</a>
+And just like that you have a <a href = "http://165.22.177.37:7000/chatbotfront">chatbot</a>
 
 
 References:
