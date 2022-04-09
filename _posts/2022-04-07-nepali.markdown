@@ -15,7 +15,7 @@ Whenever a keyboard layout or a mapping to unicode is designed, it should follow
 1. Easy to understand/ intutive
 2. Consistent 
 
-Well, the Nepali language is None.
+Well, the Nepali language has None.
 
 I am not going to talk about what a keyboard layout should look like because optimizing that is a very far topic when we haven't even optimized even the basics.
 
@@ -193,11 +193,14 @@ def correct_mistyped_word(word):
     return final_word
 ```
 
+Call the function ```correct_mistyped_word()``` and you're good to go. 
+
+
 This might not be the best approach but I had to get my work done and I was no grammarian. 
+
 
 **Maybe there are proper standard rules for how the characters should mapped, Who knows!**
 
-
-
+*And yeah, Feel free to copy the code and do anything you want with it.*
 
 
