@@ -8,18 +8,18 @@ tags: [Programming, Neural Network, Language, Nepali]
 
 It's a well known fact that Keyboards were designed for English language. With the advent of computers in various other purposes, people started to use them for various other languages too. Here, I'm going to talk about the Nepali language and how it's poor keyboard design has caused various problems. 
 
-*(I might use Devnagiri Script and Nepali Language Interchangably)*
+*(I might use Devanagiri Script and Nepali Language Interchangably)*
 
 Whenever a keyboard layout or a mapping to unicode is designed, it should follow two basic rules. 
 
-1. Easy to understand/ intutive
+1. Easy to understand/ intuitive
 2. Consistent 
 
 Well, the Nepali language has None.
 
 I am not going to talk about what a keyboard layout should look like because optimizing that is a very far topic when we haven't even optimized even the basics.
 
-## Easy to understand/intutive.
+## Easy to understand/intuitive.
 
 First and foremost, when typing anyone who knows Nepali should feel at home. They should not be like, "Well that doesn't make Sense". 
 
