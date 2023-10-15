@@ -10,6 +10,10 @@ The world of bioinformatics is fun to explore and if you know a little programmi
 
 **Background**
 
+How are diseases caused ? <br>
+How do drugs work in our body ? <br>
+Let's try to answer that and take baby steps in how we can design medicinal drugs.
+
 For now, we care about only two things: proteins and ligands. They play crucial roles in various biological processes and we are interested in their interaction. In simpler terms, think of protein like a big thing that is responsible for biological processes in our body. A ligand can bind with the protein and change the working of that protein. Due to that, we can get a new disease or we can be cured of new diseases.
 
 *So, we are interested in how a protein and a ligand interact with each other. But what is a protein and what is a ligand, structurally ?*
