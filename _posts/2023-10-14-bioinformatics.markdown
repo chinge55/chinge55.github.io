@@ -32,7 +32,7 @@ ATOM      1  N   GLU A   3     <span style = "color:green">-27.949 -78.370 -65.8
 </code>
 
 The green highlighted part is the cartesian coordinate and at the end is the element
-that is in that coordinate. Let's ignore others. RCSB has a detailed guide
+that is in that coordinate. In this line, it gives the position of a Nitrogen atom(N) in Glutamic Acid residue of the protein (GLU) which is in the 'A' chain of that protein.  <a href = "https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/introduction">RCSB</a> has a detailed guide
 on understanding PDB files.
 
 Now that we have accurate representation of Proteins and Ligands, we need to identify two important things:
@@ -49,6 +49,8 @@ Now, we need to virtually see whether the protein and the ligand will interact. 
 1. Initially, we need to find the places in the protein where a ligand can go and bind. They are called as binding pockets. Ligands can only bind with the protein in the proteins binding pockets. Conversely, if a ligand binds then we call that place a binding pocket inside a protein.
 2. After that, we take that ligand and place it inside the target protein.
 3. Now, we develop an equation that can simulate the forces of nature. The equation should take into account the chemical properties of both protein and ligands. We integrate over that equation and get a number that says how likely is the interaction between the ligand and the protein (binding affinity).
+
+*To put very simply, ligand is like a key and protein is like a lock. And we have to see if the ligand (key) fits inside the lock (protein). And the keyhole is the binding pocket.*
 
 The problem with this is that, we have a 3D grid. A single orientation or pose of a ligand is not enough to determine whether the ligand binds with the protein or not. We have to check for the multiple orientations of the ligand and also in multiple places inside the protein.
 
@@ -155,6 +157,7 @@ $ obabel <protein_name.pdb> -xr -O <protein_name.pdbqt>
 **Perform Docking**
 
 Now, we need to send this to a docking software called AutoDock Vina. I’ll explain how it works below, but for now let’s only see how to run the software.
+
 a. Create a Vina Config File:
 
 ```
@@ -172,6 +175,15 @@ size_z = 100
 exhaustiveness = 8 
 num_modes = 20 
 energy_range = 3
+```
+
+Here, **receptor** and **ligand** are the path to pdbqt files that we created in our previous steps. The **center(x,y,z)** is the center of the grid box that we will create in the protein. The **size(x,y,z)** is the size of the grid box that we want to make inside which we will check different poses of the ligand. **Exhaustiveness** determines how exhaustive/thorough we want the docking search to be i.e how many different conformations and orientations to explore. **Number of modes** set how many binding poses that vina should generate. Finally, **energy range** defines the energy range within which vina will consider the binding modes. It specifies maximum energy difference between the best binding mode and worst binding mode to be included in the output.
+
+b. Perform Docking:
+
+```bash
+# Running vina with the config we created.
+$ docker run -v $PWD:/data --rm ghcr.io/metaphorme/vina:release vina --config config.txt
 ```
 
 Now, you’ll get the docking score of the protein and ligand. Let’s see how we can interpret the docking score. Also, that was only step 1 which showed whether the protein and the ligand would interact or not. We also need to see whether they will be stable after interacting or not too.
