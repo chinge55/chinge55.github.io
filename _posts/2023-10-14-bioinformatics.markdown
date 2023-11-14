@@ -2,7 +2,7 @@
 layout: post
 title:  Bioinformatics-1 (Molecular Docking)
 date:   2023-10-14 15:11:50 +0545
-img: programming.jpg
+img: docking.jpeg
 tags: [Molecular Docking, Bioinformatics, Python]
 ---
 

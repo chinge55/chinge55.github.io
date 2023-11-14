@@ -2,7 +2,7 @@
 layout: post
 title:  My Journey Into Programming 
 date:   2020-07-21 15:11:50 +0545
-img: programming.jpg
+img: programming.jpeg
 tags: [Programming, Computers]
 ---
 My dad got us a computer in 2061 and also an internet connection. Since that time, I have been fascinated by computers. I was in the first standard and for me, that computer was like magic. Typing on a keyboard to the screen, moving a mouse and making a cursor move; everything was magical about a computer. My dad even told that with enough practice one could type without looking down at the keyboard. I didn't quite believe him. There was even a paint application(MS-Paint), I could draw houses, and do a few edits on our detailed 2 mega-pixel photos(they seemed very high-res).
