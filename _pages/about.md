@@ -4,11 +4,10 @@ title: About
 image: 14.jpg
 ---
 ***
-Hi, I'm Sangam Khanal. I love computers and hope to do cool things in it.
+Hello,
+
+I'm Sangam Khanal, and I've got a deep love for computers. Currently, I'm into Bioinformatics working on crafting an AI to assist in drug discovery. I'm also diving into fluid dynamics, using Deep Learning to predict the flow of fluids.
+
+I try to solve complex problems efficiently. So, when bored I wrestle with Euler Projects. It's a bit of a puzzle paradise and I can't get enough of it.
 
 ***
-
-Writing equations in this website have been a huge pain for me. So if you have some elegant solution, please send me a message.
-
-*Thank You for reading!*
-
