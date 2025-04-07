@@ -1,0 +1,394 @@
+---
+layout: post
+title: Molecular Dynamics Simulation
+date:   2025-02-03 10:11:50 +0300
+img: 20.jpg
+tags: [Drug Discovery, Molecular Dynamics]
+---
+<h1>MD Simulation</h1>
+<p>Molecular docking has been a game changer in drug discovery, allowing us to predict how a small molecule (our potential drug) fits into a protein, like a key sliding into a lock. It gives us a static snapshot of the binding affinity, a single frozen moment and suggests <strong>Yes, this molecule might work</strong>.</p>
+<p>But, nature doesn’t work in frozen frames. Proteins are not rigid structures, proteins are not still-life paintings. Biological molecules are in constant motion, fluctuating, twisting and turning themselves in response to their surroundings. A molecule that <em>looks</em> like a perfect fit in docking might be unstable in reality-drifting away, falling apart making binding impossible over time.</p>
+<p>This is where Molecular Dynamics (MD) Simulation comes in. Instead of a single snapshot, what if we got a movie; a step by step evolution of molecular interactions over time allowing us to simulate how molecules behave in their natural, dynamic state, capturing subtle sifts in structure and true stability of a bound complex.</p>
+<p>So, let’s go beyond the static world of docking and simulate the dynamic dance of molecules.</p>
+<p>But first, let’s clear some topics that are imperative to MD Simulation. I’ll lay out just the names for now and connect them for MD Simulation.</p>
+<h3>Sub-Topics</h3>
+<ol>
+<li>Force Field</li>
+<li>Energy Minimization</li>
+<li>Periodic Boundary Conditions (PBC)</li>
+<li>Neighbor Lists &amp; Cutoffs</li>
+<li>Electrostatics</li>
+<li>Thermodynamic Ensemble</li>
+<li>Integrator</li>
+<li>Constraint Algorithms</li>
+<li>Timestep &amp; Simulation Length</li>
+<li>Thermostat</li>
+<li>Barostat</li>
+</ol>
+<p>Daunting, right ? So, let’s see how we can simplify it and understand MD simulation on an intuitive level.</p>
+<h2>Imagining a World Without Motion</h2>
+<p>Let’s start at the very beginning. Imagine an empty void, a vaccum where time has no meaning. Floating in space is a protein—a vast, intricate structure, silent and unmoving. Nearby, a ligand drifts aimlessly, awating an interaction.</p>
+<p>But, how do we define this world ? What parts of nature should we keep? What parts should we ignore?</p>
+<p>At this moment, our universe lacks forces, motion, and space itself. We must carve out the essential laws that govern our molecules.</p>
+<h2>Forces: The Invisible Threads that Bind</h2>
+<p>For our simulation to feel real, we need to understand what holds molecules together. The protein and ligand are not truly lifeless—they push and pull against each other with invisible threads of force:</p>
+<ul>
+<li>Some forces pull atoms together, keeping bonds intact, angles firm, and torsions resisting change.</li>
+<li>Others are more subtle—the quiet shispers of electrostatics, where opposite charges attract and like charges repel.</li>
+<li>And then there are soft brushes of contact, the weak yet persistent van der Waals interactions that define how snugly molecules fit into each other’s contours.</li>
+</ul>
+<p>But something still feels wrong.</p>
+<p>This isn’t how molecules exist in the real world.</p>
+<h2>Building a World That Matters</h2>
+<p>In nature, proteins do not float in an empty vaccum—they are surrounded by water, jostled by molecular chaos, twisted by the motions of heat.</p>
+<p>So, let’s carve out a world, but not an entire universe—just enough to capture what matters.</p>
+<p>First, we place our system inside a box—a controlled space where we can track everything within. But there’s a problem: molecules don’t stop at walls in reality. A protein in water isn’t trapped in a rigid boundary.</p>
+<p>To fix this, we let space wrap around itself, like the snake game where exiting one side brings you back on the other. This creates an illusion—a Periodic Boundary Condition (PBC)—that makes our tiny system behave as if it were a part of something much larger.</p>
+<p>Now, our molecules are free to move naturally, just as they would in an infinite medium.</p>
+<h2>Time and the Dance of Motion</h2>
+<p>Now that we have created a world, we must bring it to life.</p>
+<ul>
+<li>How fast should the molecules move ?</li>
+<li>How do they tremble with heat ?</li>
+<li>How do we ensure they behave as they would in nature ?</li>
+</ul>
+<p>A thermostat gently guides temperature, ensuring that movement reflects the reality of a biological system. Similarly, a barostat controls pressure—squeeze too hard, and structures collapse; relax too much, and molecules drift apart unnaturally. These forces keep our universe stable.</p>
+<p>But something is still missing: time itself.</p>
+<p>In the molecular world, time is measured in femtoseconds—tiny fragments where atoms vibrate, shift, and respond to forces. But we cannot watch this motion all at once, so we record frames, tiny increments where we calculate new positions based on the forces acting at every moment.</p>
+<p>This is the role of an integrator, solving Newton’s laws again and again, ensuring that motion flows smoothly, one timestep at a time.</p>
+<h2>The Last Step: Preparing for Motion</h2>
+<p>Even with everything in place, nature remains restless. The starting positions of our molecules might have unnatural strain—atoms too close together, artificial clashes that disrupt the harmony of motion.</p>
+<p>Before setting things in motion, we must first relax the system—allowing it to find a stable, low-energy state before the simulation begins. This is energy minimization, the deep breath before the dance, the moment where chaos softens into harmony, ready for the unfolding story of movement.</p>
+<h2>The Story Begins</h2>
+<p>Now, everything is set.</p>
+<p>We have built a world, defined its laws, set forces in motion and prepared the system for its first steps.</p>
+<p>From here, the simulation unfolds, and we watch.</p>
+<p>Now, we will dive into each topic, one by one, mathematically and how we will use them with OpenMM</p>
+<h2>Force Fields</h2>
+<p>A simulation can only be as good as the forces governing the system. At the heart is the forcefield, a mathematical framework that defines how atoms interact based on classical physics. A forcefield is not a physical entity but a set of mathematical equations that describe:</p>
+<ol>
+<li>Bonded interactions: Forces acting within a molecule</li>
+<li>Non-bonded interactions: Forces between separate molecules or distant atoms</li>
+</ol>
+<p>So, general form for the total energy in an additive force field can be written as:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AE_%7Btotal%7D%20%3D%20E_%7Bbonded%7D%20%2B%20E_%7Bnonbonded%7D%0A" alt="
+E_{total} = E_{bonded} + E_{nonbonded}
+" /></p>
+<p>Where, the components of the covalent and noncovalent contributions are given by the following simulations:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AE_%7Bbonded%7D%20%3D%20E_%7Bbond%7D%20%2B%20E_%7Bangle%7D%20%2B%20E_%7Bdihedral%7D%0A" alt="
+E_{bonded} = E_{bond} + E_{angle} + E_{dihedral}
+" /></p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AE_%7Bnonbonded%7D%20%3D%20E_%7Belectrostatic%7D%20%2B%20E_%7Bvan%5C%20der%5C%20Waals%7D%0A" alt="
+E_{nonbonded} = E_{electrostatic} + E_{van\ der\ Waals}
+" /></p>
+<p>Let’s break down the forces:</p>
+<h3>Bonded Interactions:</h3>
+<p><strong>Bond Potential</strong>: Bonds between atoms behave like springs. THe energy required to stretch or compress a bond(Hooke’s Law) is:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7Bbond%7D%20%3D%20%5Csum_%7Bbonds%7D%7Bk_b(r_%7Bij%7D%20-%20r_0)%5E2%7D%0A" alt="
+U_{bond} = \sum_{bonds}{k_b(r_{ij} - r_0)^2}
+" /></p>
+<p>where:</p>
+<ul>
+<li>$k_b$ is the force constant</li>
+<li>$r_{ij}$ is the bond length</li>
+<li>$r_0$ is the value for bond length betweens atoms $i$ and $j$ when all other terms in the force fields are set to 0</li>
+</ul>
+<p>Through this, a reasonable accuracy at bond lengths near equilibrium distance is provided, it is less accurate as one moves away. For most practical applications, this is good enough.</p>
+<p><em>How long the bond is and how much energy does it take to stretch or compress it?</em></p>
+<p><strong>Angle Potential:</strong> The bond angles also follow a harmonic potential (bending):</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7Bangle%7D%20%3D%20%5Csum_%7Bangles%7D%7Bk_%7B%5Ctheta%7D(%5Ctheta%20-%20%5Ctheta_0)%5E2%7D%0A" alt="
+U_{angle} = \sum_{angles}{k_{\theta}(\theta - \theta_0)^2}
+" /></p>
+<p>where:</p>
+<ul>
+<li>$k_{\theta}$ is the angle force constant</li>
+<li>$\theta$ is the current bond angle</li>
+<li>$\theta_0$ is the equilibrium bond angle</li>
+</ul>
+<p><em>How much does the bond angle bend and how much energy is needed to bend it ?</em></p>
+<p><strong>Dihedral Potential(Torsional Rotation)</strong></p>
+<p>The energy for rotating around a bond is given by a periodic function (twisting):</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7Btorsions%7D%20%3D%20%5Csum_%7Btorsions%7D%7Bk_%7B%5Cphi%7D(1%20%2B%20cos(n%5Cphi%20-%20%5Cgamma))%7D%0A" alt="
+U_{torsions} = \sum_{torsions}{k_{\phi}(1 + cos(n\phi - \gamma))}
+" /></p>
+<p>where:</p>
+<ul>
+<li>$k_\phi$ is the torsion force constant</li>
+<li>$\phi$ is the torsion angle</li>
+<li>$n$ is periodicity</li>
+<li>$\gamma$ is the phase angle</li>
+</ul>
+<p><em>How much does one part of a molecule can rotate relative to another, and  what energy barriers exist for rotation?</em></p>
+<p>So, using these three equations, we first keep atoms at a reasonable distance, prevent them from unnatural bending and stop the molecules from spinning freely and enforce realistic rotations.</p>
+<h3>Non-Bonded Interactions:</h3>
+<p><strong>Electrostatic Interactions</strong></p>
+<p>As the atoms themselves are charged particles, they interact with each other via electric forces. Using Coulomb’s law:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7Belectrostatics%7D%20%3D%20%5Cfrac%7B1%7D%7B4%5Cpi%5Cepsilon%7D%5Csum_%7Bi%3Cj%7D%7B%5Cfrac%7Bq_iq_j%7D%7Br_%7Bij%7D%7D%7D%0A" alt="
+U_{electrostatics} = \frac{1}{4\pi\epsilon}\sum_{i&lt;j}{\frac{q_iq_j}{r_{ij}}}
+" /></p>
+<p>where:</p>
+<ul>
+<li>$q_i,q_j$ are charges on atoms $i$ and $j$</li>
+<li>$r_{ij}$ is the distance between atoms</li>
+<li>$\epsilon$ is the dielectric constant</li>
+</ul>
+<p><strong>van der Waals Interactions</strong></p>
+<p>The van der Waals interactions have an origin from quantum mechanical effects but for computationally efficient approximation, we use Lennard-Jones Potential</p>
+<p>The van der Waals force is a distance dependent interaction between atoms or molecules. These attractions are comparitively weak and therefore more susceptible to disturbance. The van der Waals force quickly vanishes at longer distances between interacting molecules.</p>
+<p>Instead of using a complicated formula, vdW interactions are modelled with the Lennard-Jones 12-6 potential:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7BLJ%7D(r)%20%3D%204%5Cepsilon%5B(%5Cfrac%7B%5Csigma%7D%7Br%7D)%5E12-(%5Cfrac%7B%5Csigma%7D%7Br%7D)%5E6%5D%0A" alt="
+U_{LJ}(r) = 4\epsilon[(\frac{\sigma}{r})^12-(\frac{\sigma}{r})^6]
+" /></p>
+<p>where:</p>
+<ul>
+<li>$\epsilon$ is the depth of the potential well</li>
+<li>$\sigma$ is the distance where the potential is zero</li>
+<li>$r^{-12}$ approximates repulsion (Pauli’s exclusion)</li>
+<li>$r^{-6}$ models attraction (London dispersion)</li>
+</ul>
+<p>Now, we have all the forces… everything should be easy, right? Well, not. In an ideal world, we would be solving Schrodinger’s equation for every atom, but it’s computationally impossible. So, the constants that we had been defining are sometimes derived from experimental data, sometimes from quantum mechanics, and sometimes with Emperical knowledge. Therefore resulting in many forcefields, each tuned for it’s own case. Some force fields might be useful for Proteins, and we might need a different force field for small organic molecules. Some force fields are AMBER, CHARMM, OPLS-AA, etc, just to name a few.</p>
+<h3>In OpenMM:</h3>
+<pre><code class="language-python">from openmm.app import *
+from openmm import *
+#Loading the Amber Force Field 
+curr_forcefield = ForceField(&quot;amber14-all.xml&quot;, &quot;amber14/tip3pfb.xml&quot;)
+#Btw, you can define your own force field: http://docs.openmm.org/7.6.0/userguide/application/05_creating_ffs.html
+</code></pre>
+<p>References (Force Fields):</p>
+<ol>
+<li><a href="https://computecanada.github.io/molmodsim-md-theory-lesson-novice/01-Force_Fields_and_Interactions/index.html">https://computecanada.github.io/molmodsim-md-theory-lesson-novice/01-Force_Fields_and_Interactions/index.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Force_field_(chemistry)">https://en.wikipedia.org/wiki/Force_field_(chemistry)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Van_der_Waals_force#:~:text=8%20External%20links-,Definition,a%20consequence%20of%20quantum%20dynamics">https://en.wikipedia.org/wiki/Van_der_Waals_force#:~:text=8 External links-,Definition,a consequence of quantum dynamics</a>.</li>
+<li><a href="https://en.wikipedia.org/wiki/Lennard-Jones_potential">https://en.wikipedia.org/wiki/Lennard-Jones_potential</a></li>
+</ol>
+<h2>Energy Minimization</h2>
+<p>Energy minimization is a technique used to find the most stable arrangement of atoms in a molecular system by minimizing its potential energy. This step is done while preparing molecular structures before performing dynamics simulations.</p>
+<p>For example, when optimizing the geometry of a water molecule, the aim is to obtain the hydrogen-oxygen bond lengths and the hydrogen-oxygen-hydrogen bond angle which minimize the forces that would otherwise be pulling atoms together of pushing them apart.</p>
+<p>(<em>Why? :Nature is most often Optimized)</em></p>
+<p>It works iteratively by reducing the total potential energy of the system.</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AU_%7Btotal%7D%20%3D%20U_%7Bbonded%7D%20%2B%20U_%7Bnon-bonded%7D%0A" alt="
+U_{total} = U_{bonded} + U_{non-bonded}
+" /></p>
+<p><strong>Mathematically, we want to find a configuration where:</strong></p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0A%5Cfrac%7BdU%7D%7Bdr%7D%20%3D%200%0A" alt="
+\frac{dU}{dr} = 0
+" /></p>
+<p>where $U$ is the potential energy, $r$ represents atomic positions.</p>
+<p>So, we are searching for a “local minimum” in the energy landscape, where small movements do not lead to drastic energy changes.</p>
+<p><strong>OpenMM uses L-BFGS (Limited-memory Broyden-Fletcher-Goldfarb-Shanno) Algorithm</strong></p>
+<p>Let’s see how we can minimize energy in OpenMM</p>
+<pre><code class="language-python">from openmm import *
+from openmm.app import *
+from openmm.unit import *
+
+# Load system
+pdb = PDBFile('protein_ligand.pdb')
+forcefield = ForceField('amber14-all.xml', 'amber14/tip3p.xml')
+
+# Create system with force field
+system = forcefield.createSystem(pdb.topology, nonbondedMethod=PME,
+                                 nonbondedCutoff=1.0*nanometer, constraints=HBonds)
+
+# Integrator (dummy, as we only minimize)
+integrator = LangevinIntegrator(300*kelvin, 1/picosecond, 0.002*picoseconds)
+
+# Set up simulation
+simulation = Simulation(pdb.topology, system, integrator)
+simulation.context.setPositions(pdb.positions)
+
+# Run energy minimization
+print(&quot;Minimizing energy...&quot;)
+simulation.minimizeEnergy(maxIterations=1000)
+print(&quot;Minimization complete.&quot;)
+</code></pre>
+<p>References (Energy Minimization):</p>
+<ol>
+<li><a href="https://www.nature.com/articles/s42004-024-01114-5">https://www.nature.com/articles/s42004-024-01114-5</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Energy_minimization">https://en.wikipedia.org/wiki/Energy_minimization</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">https://en.wikipedia.org/wiki/Limited-memory_BFGS</a></li>
+</ol>
+<h2>Periodic Boundary Conditions (PBC)</h2>
+<p>We need to simulate a small system while making it behave like an infinite one. Without them, the molecules will hit the walls of the simulation box and artificially stop moving, the system would feel unnaturally small, leading to surface effects.</p>
+<p><strong>Mathematically</strong></p>
+<p>The system is wrapped around a cubic box with dimensions $L_x, L_y, L_z$. If an atom moves beyond the boundary:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0Ar_i%20%3D%20r_i%20-%20L%20%5Ctimes%20round(%5Cfrac%7Br_i%7D%7BL%7D)%0A" alt="
+r_i = r_i - L \times round(\frac{r_i}{L})
+" /></p>
+<p>where:</p>
+<ul>
+<li>$r_i$ is the atom’s position</li>
+<li>$L$ is the box length</li>
+<li><code>round</code> ensures the atom wraps around correctly to the other side</li>
+</ul>
+<p>So, at the boundary:</p>
+<ol>
+<li>Interactions are computed using the closest periodic image</li>
+<li>Minimum image convention is used—An atom interacts with the closest periodic copy of another atom.</li>
+</ol>
+<p>In OpenMM</p>
+<pre><code class="language-python"># Define a system with PBC
+system = forcefield.createSystem(
+    pdb.topology,
+    nonbondedMethod=PME,  # Enables periodic electrostatics
+    nonbondedCutoff=1.0*nanometer,  # Defines interaction range
+    constraints=HBonds
+)
+</code></pre>
+<p>Checking the box Size:</p>
+<pre><code class="language-python"># Get simulation box dimensions
+box_vectors = simulation.context.getState().getPeriodicBoxVectors()
+print(&quot;Box dimensions:&quot;, box_vectors)
+
+</code></pre>
+<p>Neighbor Lists and CutOffs are automatically handled when defining the nonbonded interactions.</p>
+<p>Why ? Calculating every possible pairwise interaction would be billions of force calculations per step. So, beyond a certain distance, forces like van der Waals and electrostatic forces (that decay with distance) don’t contribute much.</p>
+<pre><code class="language-python">system = forcefield.createSystem(
+    pdb.topology,
+    nonbondedMethod=PME,  # Enables Ewald summation
+    nonbondedCutoff=1.0*nanometer  # Cutoff for direct-space interactions
+)
+
+</code></pre>
+<h2>Electrostatics</h2>
+<p><em>Already written in previous section, need to manage</em></p>
+<h2>Thermodynamic Ensemble</h2>
+<p>Now that we have defined forces, periodic boundaries, and electrostatics, we need to decide how to control temperature and pressure during our simulation.</p>
+<p>A thermodynamic ensemble is a set of conditions that define how energy, temperature, volume and pressure are controlled in a molecular dynamics (MD) simulation.</p>
+<p><strong>Types Of Thermodynamic Ensembles Used in MD</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Ensemble</strong></th>
+<th><strong>Fixed Quantities</strong></th>
+<th><strong>What it Simulates</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVE(Microcannonical)</td>
+<td>Energy <em>E,</em> Volume <em>V,</em> Number of Particles <em>N</em></td>
+<td>Isolated system (no heat or pressure exchange)</td>
+</tr>
+<tr>
+<td>NVT(Canonical)</td>
+<td>Temperature <em>T,</em> Volume <em>V,</em> Number of particles <em>N</em></td>
+<td>Constant-temperature system (solvent in a fixed box)</td>
+</tr>
+<tr>
+<td>NPT(Isothermal-Isobaric)</td>
+<td>Temperature <em>T,</em> Pressure <em>P,</em> Number of Particles <em>N</em></td>
+<td>System under physiological conditions (biological realism)</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s discuss more on Ensembles:</p>
+<p><strong>NVE Ensemble:</strong></p>
+<ul>
+<li>Energy is conserved, meaning no heat or pressure is exchanged</li>
+<li><strong>Not ideal for biomolecular simulations</strong>, because real proteins and water exchange heat with their surroundings.</li>
+</ul>
+<pre><code class="language-python">integrator = VerletIntegrator(0.002*picoseconds)  # No temperature control
+</code></pre>
+<p><strong>NVT Ensemble:</strong></p>
+<ul>
+<li>Keeps temperature constant using a thermostat</li>
+<li>Volume is fixed → No pressure regulation</li>
+<li>Used in short simulation where we need to maintain a controlled temperature</li>
+</ul>
+<pre><code class="language-python">integrator = LangevinIntegrator(
+    300*kelvin,  # Target temperature
+    1/picosecond,  # Friction coefficient (damping)
+    0.002*picoseconds  # Time step
+)
+</code></pre>
+<p><strong>NPT Ensemble</strong></p>
+<ul>
+<li>Keeps temperature and pressure constant using both a thermostat and a barostat</li>
+<li>Allows the simulation box to adjust in size → More realistic for biological simulations</li>
+<li>Used in most biomolecular studies (proteins in a solution, drug binding)</li>
+</ul>
+<pre><code class="language-python">system.addForce(MonteCarloBarostat(1*bar, 300*kelvin, 25))  # Pressure control
+</code></pre>
+<h2>Integrator: Advancing the system in Time:</h2>
+<p>Now that we’ve set up forces, electrostatics, periodic boundaries, and thermodynamic control, we need to evolve the system in time. This is done using an integrator.</p>
+<p><strong>Why an Integrator</strong></p>
+<p>MD Simulations follow Newton’s Second Law:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0AF%20%3D%20ma%0A" alt="
+F = ma
+" /></p>
+<p>which in terms of potential energy $U®$ becoms:</p>
+<p align="center"><img align="center" src="https://i.upmath.me/svg/%0Am%5Cfrac%7Bd%5E2r%7D%7Bdt%5E2%7D%20%3D%20-%5Cnabla%20U%0A" alt="
+m\frac{d^2r}{dt^2} = -\nabla U
+" /></p>
+<p>This is a second order differential equation that we cannot solve analytically for complex systems, so we use numerical integration to approximate how atoms move.</p>
+<p>The integrator updates</p>
+<ol>
+<li>Positions $®$</li>
+<li>Velocities $(v)$</li>
+<li>Accelerations $(a)$</li>
+</ol>
+<p>at each timestep.</p>
+<h3>A Simulation Example:</h3>
+<p><em>This simulation example will provide as less technical details as possible. The basics are the same, with just OpenMM flavor.</em></p>
+<p><strong>Only the bits and pieces and important code are given here, proper running code (”press enter and run”) code can be found at:</strong> <a href="https://github.com/chinge55/openmm_practice/tree/master">https://github.com/chinge55/openmm_practice/tree/master</a></p>
+<p>Now, I assume you have the following things:</p>
+<ol>
+<li>Docked ligand pose <code>.pdbqt</code>  file.</li>
+<li>Original Ligand <code>.sdf</code>  file.</li>
+<li>Prepared protein <code>.pdb</code>  file.</li>
+</ol>
+<p>First, let’s understand why these files are necessary. So, I’ll just walk through the process.</p>
+<p>The <code>pdbqt</code>  file basically doesn’t contain bond information explicitly but contains 3D coordinates of the atoms. If we just try to load the <code>pdbqt</code>  file, or just convert it to <code>pdb</code>  and load it, the bond information can be incorrect (mostly is). This will cause problems.</p>
+<p>So, what we want to do it take the coordinates from the docked ligand and take the bond information from the original ligand file. Doing this, the bonds, valencies etc will everything be correct while retaining the docked information.</p>
+<p>For the examples below:</p>
+<ul>
+<li>Protein (2B7A)</li>
+<li>Ligand (Pubchem- 66646982)</li>
+</ul>
+<ol>
+<li>Convert the <code>pdbqt</code>  file to <code>pdb</code>  file. <em>(Note that bond information is not correct still)</em></li>
+</ol>
+<pre><code class="language-bash">$ obabel out.pdbqt -O ligand_docked.pdb -d
+</code></pre>
+<ol>
+<li>Now, the original <code>sdf</code>  file has unnecessary information as well. So, to match it with what we have.</li>
+</ol>
+<pre><code class="language-bash">$ obabel ligand_pubchem-d -O ligand_original.sdf -d
+</code></pre>
+<p><em>We had just removed hydrogens from both, well who cares about hydrogen anyway.</em></p>
+<ol>
+<li>Now, transferring coordinates from docked file to original.</li>
+</ol>
+<pre><code class="language-python">from rdkit import Chem
+from rdkit.Chem import AllChem
+
+# Load the original molecule (which has correct bonds)
+original_mol = Chem.MolFromMolFile(&quot;ligand_original.sdf&quot;)
+
+# Load the docked molecule (without sanitization)
+docked_mol = Chem.MolFromPDBFile(&quot;ligand_docked.pdb&quot;, sanitize=False)
+
+if original_mol.GetNumAtoms() != docked_mol.GetNumAtoms():
+    raise ValueError(&quot;Mismatch in the number of atoms between original and docked ligand.&quot;)
+
+conf = docked_mol.GetConformer()
+new_conf = Chem.Conformer(original_mol.GetNumAtoms())
+
+for i, atom in enumerate(original_mol.GetAtoms()):
+    pos = conf.GetAtomPosition(i)
+    new_conf.SetAtomPosition(i, pos)
+
+original_mol.RemoveAllConformers()
+original_mol.AddConformer(new_conf)
+
+Chem.MolToMolFile(original_mol, &quot;ligand_final.sdf&quot;)
+
+print(&quot;Successfully transferred coordinates! Saved as ligand_final.sdf&quot;)
+</code></pre>
+<p><strong>Ligand Preparation</strong></p>
+<p>Notice that I had not added hydrogen previously. So, I will add hydrogens now So, we do that in the ligand that was saved in the previous step.</p>
+<h2>References (General):</h2>
+<ol>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6209097/">https://pmc.ncbi.nlm.nih.gov/articles/PMC6209097/</a></li>
+<li><a href="https://computecanada.github.io/molmodsim-md-theory-lesson-novice/">https://computecanada.github.io/molmodsim-md-theory-lesson-novice/</a></li>
+</ol>
